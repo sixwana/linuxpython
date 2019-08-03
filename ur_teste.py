@@ -31,7 +31,10 @@ def make_set (list_record,position):
 
 def format_record(unformat_record):
     '''
-
+    Formats data coming from the variable unformat_record using time module,
+    Feeding day, hour, minutes, seconds, and year into the time module.
+    Also checks if any given record login and logout days are different. If
+    login and logout days are different, duplicate 
     '''
     record_list = []
     for i in unformat_record:
@@ -45,8 +48,9 @@ def format_record(unformat_record):
             record_list.append(i.split())
         else:
             next_day = time.mktime(time1)
-            
+
             eod_time = time.ctime(next_day).split()
+
             old_day = i.split()
 
             old_day[9] = eod_time[0]
@@ -55,8 +59,8 @@ def format_record(unformat_record):
             old_day[12] = '23:59:59'
             old_day[13] = eod_time[4]                           
             record_list.append(old_day)
+
             while different_day1 != different_day2:
-                                
                 next_day = next_day + 86400 
                 new_day = i.split()
                 new_time = time.ctime(next_day).split()
@@ -170,9 +174,9 @@ if __name__ == '__main__':
 
 
     if args.list:
-        if args.list == 'user':
+        if args.list == 'user': #if user is selected, set position to 0.
             position = 0
-        else:
+        else: #if rhost (ip) is selected, set position to 2.
             position = 2
         print(str(args.list).title() + " list for", ' '.join(args.files))
         print(len(str(args.list).title() + " list for "+ ' '.join(args.files))*'=')
