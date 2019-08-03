@@ -7,7 +7,9 @@ import argparse
  
 def read_login_rec(filelist):
     '''
-    Checks for the presence of 15 elements in list, adds entries from file to variable login_recs
+    Opens file containing the raw data, 
+    Checks for the presence of 15 elements in list, 
+    Adds entries from file to variable login_recs.
     '''
     login_recs = []
     f = open(filelist,'r')
@@ -19,6 +21,8 @@ def read_login_rec(filelist):
 
 def make_set (list_record,position):
     '''
+    Creates a set for each item in list_record,
+    Taking into consideration the position.
     '''
     res_list = set()
     for i in list_record:
@@ -27,6 +31,7 @@ def make_set (list_record,position):
 
 def format_record(unformat_record):
     '''
+
     '''
     record_list = []
     for i in unformat_record:
@@ -72,7 +77,8 @@ def format_record(unformat_record):
     return record_list
 
 def cal_daily_usage(subject,login_recs):
-    ''' 
+    '''
+    Generates daily usage report by
     '''
     total = 0
     daily_usage = {}
@@ -90,6 +96,7 @@ def cal_daily_usage(subject,login_recs):
     
 def cal_weekly_usage(subject,login_recs):
     '''
+    Generates weekly usage report by
     '''
     total = 0
     weekly_usage = {}
@@ -106,6 +113,7 @@ def cal_weekly_usage(subject,login_recs):
 
 def cal_monthly_usage(subject,login_recs):
     '''
+    Generates monthly usage report by
     '''
     total = 0
     monthly_usage = {}
