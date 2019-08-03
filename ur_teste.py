@@ -34,7 +34,7 @@ def format_record(unformat_record):
     Formats data coming from the variable unformat_record using time module,
     Feeding day, hour, minutes, seconds, and year into the time module.
     Also checks if any given record login and logout days are different. If
-    login and logout days are different, duplicate 
+    login and logout days are different, duplicate entry.
     '''
     record_list = []
     for i in unformat_record:
@@ -82,14 +82,14 @@ def format_record(unformat_record):
 
 def cal_daily_usage(subject,login_recs):
     '''
-    Generates daily usage report by
+    Generates daily usage report by adding all the seconds from all days in 
     '''
     total = 0
     daily_usage = {}
-    for value in login_recs:
-        if subject in value:
-            time_usage = int(time.mktime(time.strptime(' '.join(value[9:14]))) - time.mktime(time.strptime(' '.join(value[3:8]))))
-            time_format = time.strftime('%Y %m %d',time.strptime(' '.join(value[9:14])))
+    for time_number in login_recs:
+        if subject in time_number:
+            time_usage = int(time.mktime(time.strptime(' '.join(time_number[9:14]))) - time.mktime(time.strptime(' '.join(time_number[3:8]))))
+            time_format = time.strftime('%Y %m %d',time.strptime(' '.join(time_number[9:14])))
             try:
                 daily_usage[time_format] += time_usage
             except:
@@ -100,14 +100,14 @@ def cal_daily_usage(subject,login_recs):
     
 def cal_weekly_usage(subject,login_recs):
     '''
-    Generates weekly usage report by
+    Generates weekly usage report by adding all the seconds from all days in week
     '''
     total = 0
     weekly_usage = {}
-    for value in login_recs:
-        if subject in value:
-            time_usage = int(time.mktime(time.strptime(' '.join(value[9:14]))) - time.mktime(time.strptime(' '.join(value[3:8]))))
-            time_format = time.strftime('%Y %W',time.strptime(' '.join(value[9:14])))
+    for time_number in login_recs:
+        if subject in time_number:
+            time_usage = int(time.mktime(time.strptime(' '.join(time_number[9:14]))) - time.mktime(time.strptime(' '.join(time_number[3:8]))))
+            time_format = time.strftime('%Y %W',time.strptime(' '.join(time_number[9:14])))
             try:
                 weekly_usage[time_format] += time_usage
             except:
@@ -117,14 +117,14 @@ def cal_weekly_usage(subject,login_recs):
 
 def cal_monthly_usage(subject,login_recs):
     '''
-    Generates monthly usage report by
+    Generates monthly usage report by adding all the seconds from all days in month
     '''
     total = 0
     monthly_usage = {}
-    for value in login_recs:
-        if subject in value:
-            time_usage = int(time.mktime(time.strptime(' '.join(value[9:14]))) - time.mktime(time.strptime(' '.join(value[3:8]))))
-            time_format = time.strftime('%Y %m',time.strptime(' '.join(value[9:14])))
+    for time_number in login_recs:
+        if subject in time_number:
+            time_usage = int(time.mktime(time.strptime(' '.join(time_number[9:14]))) - time.mktime(time.strptime(' '.join(time_number[3:8]))))
+            time_format = time.strftime('%Y %m',time.strptime(' '.join(time_number[9:14])))
             try:
                 monthly_usage[time_format] += time_usage
             except:
@@ -132,11 +132,12 @@ def cal_monthly_usage(subject,login_recs):
             total += time_usage
     return monthly_usage,total
 
-def content(calculation):
+def formatting(usage_number):
     '''
+
     '''
     ft = []
-    records,total = calculation
+    records,total = usage_number
     for key in sorted(records.keys(),reverse=True):
         ft.append("{:<11s}{:>11d}".format(str(key),records[key]))
     ft.append("{:<11s}{:>11d}".format("Total",total))
@@ -188,10 +189,10 @@ if __name__ == '__main__':
         print(len(args.type.title() + " Usage Report for " + subject)*'=')
         if args.type == 'daily':
             print("{:<14s}{:>14s}".format("Date","Usage in Seconds"))
-            print(*content(cal_daily_usage(subject,record_list)),sep = "\n")
+            print(*formatting(cal_daily_usage(subject,record_list)),sep = "\n")
         elif args.type == 'weekly':
             print("{:<14s}{:>14s}".format("Week #","Usage in Seconds"))
-            print(*content(cal_weekly_usage(subject,record_list)),sep = "\n")
+            print(*formatting(cal_weekly_usage(subject,record_list)),sep = "\n")
         else:
             print("{:<14s}{:>14s}".format("Month","Usage in Seconds"))
-            print(*content(cal_monthly_usage(subject,record_list)),sep = "\n")
+            print(*formatting(cal_monthly_usage(subject,record_list)),sep = "\n")
